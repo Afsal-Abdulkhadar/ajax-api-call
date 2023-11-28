@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1 class="text-center text-primary" style="margin-top: 20px;">ToDo Data</h1>
+
+    <div class="row">
+        <div class="col-3" id="result">
+        </div>
+    </div>
+
+    <script>
+        // AJAX API Call
+
+        // step 1 :- create a new HTTPXML Object
+
+        const responce = new XMLHttpRequest();
+
+        // step 2 :- Connect or API cancelIdleCallback
+
+        responce.open(`get`, `https://jsonplaceholder.typicode.com/users`)
+
+        // step 3 :- send
+
+        responce.send()
+
+        // step 4 :- Set onreadystatechange
+
+        responce.onreadystatechange = () => {
+            if (responce.readyState == 4) {
+                if (responce.status > 199 && responce.status < 300) {
+                    console.log(responce.responseText);
+
+                    let todoArray = JSON.parse(responce.responseText)
+                    console.log(todoArray);
+
+                    displayData(todoArray);
+                }
+                else {
+                    alert("can't find")
+                }
+            }
+        }
+
+        // // step 5 :- display array of data into browser window
+
+        function displayData(todoArray) {
+            for (let todo of todoArray) {
+
+                htmlData =`
+                    <div class="card" style="width :800px; margin-left :390px; margin-top :50px; padding :40px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; background-color :rgb(189, 199, 184);">
+                        <div class="card-body">
+                            <h5>Id : ${todo.id}</h5>
+                            <h5>Name : ${todo.name}</h5>
+                            <h5>Username : ${todo.username}</h5>
+                            <h5>Email : ${todo.email}</h5>
+                            <h5>Address : ${todo.address.street},${todo.address.suite},${todo.address.city},${todo.address.zipcode}</h5>
+                            <h5>Phone Number : ${todo.phone}</h5>
+                            <h5>Website : ${todo.website}</h5>
+                            <h5>Company : ${todo.company.name},${todo.company.catchPhrase},${todo.company.bs}</h5>
+                        </div>
+                    </div>`
+
+                result.innerHTML += htmlData
+            }
+        }
+    </script>
+</body>
+
+</html>
